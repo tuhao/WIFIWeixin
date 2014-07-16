@@ -1,0 +1,21 @@
+<xml>
+<ToUserName><![CDATA[{{to_user_name}}]]></ToUserName>
+<FromUserName><![CDATA[{{from_user_name}}]]></FromUserName>
+<CreateTime><![CDATA[{{create_timestamp}}]]></CreateTime>
+<MsgType><![CDATA[news]]></MsgType>
+<ArticleCount><![CDATA[{{count}}]]></ArticleCount>
+<Articles>
+{% for item in articles %}
+<item>
+<Title><![CDATA[{{item.title}}]]></Title> 
+<Description><![CDATA[{{item.description}}]]></Description>
+{% if forloop.first %}
+<PicUrl><![CDATA[http://{{request.META.HTTP_HOST}}{{item.pic_thumbnail_album.url}}]]></PicUrl>
+{% else %}
+<PicUrl><![CDATA[http://{{request.META.HTTP_HOST}}{{item.pic_thumbnail.url}}]]></PicUrl>
+{% endif%}
+<Url><![CDATA[{{item.url}}]]></Url>
+</item>
+{% endfor %}
+</Articles>
+</xml>
