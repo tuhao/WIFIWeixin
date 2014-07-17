@@ -17,13 +17,11 @@ class Help(models.Model):
 		return self.title
 
 class Sort(models.Model):
-	sid = models.IntegerField(default=0)
 	name = models.CharField(max_length=100)
 	def __unicode__(self):
 		return self.name
 
 class Merchant(models.Model):
-	mid = models.CharField(max_length=100)
 	sort = models.ForeignKey(Sort) 
 	name = models.CharField(max_length=255)
 	introduction = models.CharField(max_length=255)
@@ -34,7 +32,6 @@ class Merchant(models.Model):
 	
 
 class MerchantWIFI(models.Model):
-	wid = models.CharField(max_length=100)
 	mid = models.ForeignKey(Merchant)
 	mac = models.CharField(max_length=100)
 	key = models.CharField(max_length=255)
@@ -43,7 +40,6 @@ class MerchantWIFI(models.Model):
 		return self.wid
 
 class Article(models.Model):
-	news = models.ForeignKey(News)
 	title = models.CharField(max_length = 100)
 	description = models.CharField(max_length=255,blank=True)
 	pic = models.CharField(max_length=255,blank=False)

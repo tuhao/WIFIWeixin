@@ -4,6 +4,9 @@ import os.path
 DEBUG = True
 TEMPLATE_DEBUG = None
 
+ACCESS_TOKEN = ''
+CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + ACCESS_TOKEN
+TOKEN = ''
 
 ADMINS = (
      ('Yasir', 'astro.liuhang@gmail.com'),
@@ -25,7 +28,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['wifi.yasir.cn']
+ALLOWED_HOSTS = ['']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -131,7 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'signature',
-    'approve',
+    'menu',
     'pagination',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
