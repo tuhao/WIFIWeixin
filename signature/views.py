@@ -7,6 +7,7 @@ from signature.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from weixin import settings
+from weixin import common_exception
 import sha
 import time
 import xml.etree.ElementTree as ET
@@ -16,7 +17,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 CONTENT_SWITCH = {
-     '帮助':lambda req,param:reply_help(req,param),
+    '帮助':lambda req,param:reply_help(req,param),
 	'help':lambda req,param:reply_help(req,param),
 	}
 
@@ -58,38 +59,29 @@ def check_signature(request):
 
 
 def reply(request):
-	xml = parse_xml(request)
-	if xml[1] is None:
-		param = xml[0]
-		msg_type = param['msg_type']
-		key = param.get(msg_type,None)
-		if key is not None:
-			key = param[msg_type].encode('utf-8')
-			switch = MSG_TYPE_SWITCH.get(msg_type,None)
-			if switch is not None:
-				func = switch.get(key.lower(),None)
-				if func is not None:
+	parse_result = parse_xml(request)
+	if parse_result[1] is None:
+		param = parse_result[0]
+		msg_type_value = param['msg_type']   		# msg_type_value can be event or text.
+		value = param.get(msg_type_value,None)		# get event value or text value
+		if value:
+			value = param[msg_type].encode('utf-8')
+			processor_switch = MSG_TYPE_SWITCH.get(msg_type_value,None)
+			if processor_switch:
+				func = processor_switch.get(value.lower(),None)
+				if func:
 					return func(request,param)
 				else:
 					#if key[:2].lower() == 'ss':
 					#	key = key[2:]
 					#return reply_search(request, param, key)
-					#else:
-					#	try:
-					#		merchants = Merchant.objects.order_by('-create_time')[:6]
-					#		return reply_gen_news(request,param,merchants)
-					#	except Exception, e:
-					#		raise e
-					#	else:
-					#		return reply_gen_news(request,param,list())
 					pass
-					
 			else:
-				return HttpResponse('unsupported type')
+				return HttpResponse(common_exception.UNSUPPORT_EVENT_TYPE)
 		else:
-			return HttpResponse('unexpected type')
+			return HttpResponse(common_exception.UNSUPPORT_EVENT_TYPE)
 	else:
-		return HttpResponse(xml[1])
+		return HttpResponse(parse_result[1])
 
 def parse_xml(request):
 	try:
@@ -103,14 +95,17 @@ def parse_xml(request):
 		if msg_type is not None and to_user_name is not None and from_user_name is not None:
 			param = dict(to_user_name=to_user_name.text,from_user_name=from_user_name.text,msg_type=msg_type.text)
 			content = doc.find('Content')
-			if content is not None:
+			if content:
 				param.update(text=content.text)
 			event = doc.find('Event')
-			if event is not None:
+			if event:
 				param.update(event=event.text)
+			event_key = doc.find('EventKey')
+			if event_key:
+				param.update(event_key=event_key.text)
 			return param,None
 		else:
-			return None,'missing msg_type'
+			return None,common_exception.MISSING_PARAMS
 
 
 
