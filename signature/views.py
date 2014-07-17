@@ -23,8 +23,8 @@ CONTENT_SWITCH = {
 
 EVENT_SWITCH = {
 	'subscribe':lambda req,param:reply_welcome(req,param),
-	'CLICK':None,
-	'VIEW':None,
+	'click':lambda req,param:reply_click(req,param),
+	'view':lambda req,param:redirect(req,param),
 }
 
 MSG_TYPE_SWITCH = {
@@ -65,17 +65,15 @@ def reply(request):
 		msg_type_value = param['msg_type']   		# msg_type_value can be event or text.
 		value = param.get(msg_type_value,None)		# get event value or text value
 		if value:
-			value = param[msg_type].encode('utf-8')
+			value = param[msg_type_value].encode('utf-8')
 			processor_switch = MSG_TYPE_SWITCH.get(msg_type_value,None)
 			if processor_switch:
-				func = processor_switch.get(value.lower(),None)
-				if func:
-					return func(request,param)
+				process_func = processor_switch.get(value.lower(),None)
+				if process_func:
+					return process_func(request,param)
 				else:
-					#if key[:2].lower() == 'ss':
-					#	key = key[2:]
 					#return reply_search(request, param, key)
-					pass
+					return HttpResponse(common_exception.UNSUPPORT_CONTENT)
 			else:
 				return HttpResponse(common_exception.UNSUPPORT_EVENT_TYPE)
 		else:
@@ -107,7 +105,11 @@ def parse_xml(request):
 		else:
 			return None,common_exception.MISSING_PARAMS
 
+def reply_click(request,param):
+	pass
 
+def redirect(request,param):
+	pass
 
 IMAGEURL = re.compile(r'h(?!.*http://).*\.jpg$')
 def reply_gen_news(request,param,merchants):

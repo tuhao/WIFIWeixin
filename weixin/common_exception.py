@@ -11,3 +11,4 @@ EMPTY_BUTTON = u'存在空按钮'
 MISSING_PARAMS = 'Missing parameters'
 
 UNSUPPORT_EVENT_TYPE = 'Unsupport event type'
+UNSUPPORT_CONTENT = 'Unsupport content'
