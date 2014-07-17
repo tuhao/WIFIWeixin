@@ -3,6 +3,7 @@
 
 from menu.models import *
 from django.shortcuts import render_to_response
+from django.views.decorators.csrf import csrf_exempt
 from weixin import settings
 from weixin import common_exception
 import requests
@@ -20,6 +21,12 @@ def create_menu(request):
 		headers = {'content-type':'application/json'}
 		response = requests.post(url,data=post_data,headers=headers)
 		result = response.text
+	return render_to_response('menu_result.html',locals())
+
+def delete_menu(request):
+	url = settings.DELETE_MENU_URL
+	response = requests.get(url)
+	result = response.text
 	return render_to_response('menu_result.html',locals())
 
 def generate_menu():
@@ -55,3 +62,4 @@ def generate_data(views,clicks):
 	for click in clicks:
 		data.append({'type':click.default_type,'name':click.name,'key':click.key})
 	return data
+

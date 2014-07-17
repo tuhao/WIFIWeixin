@@ -5,7 +5,8 @@ DEBUG = True
 TEMPLATE_DEBUG = None
 
 ACCESS_TOKEN = ''
-CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + ACCESS_TOKEN
+CREATE_MENU_URL = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=' + ACCESS_TOKEN
+DELETE_MENU_URL = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=' + ACCESS_TOKEN
 TOKEN = ''
 
 ADMINS = (
