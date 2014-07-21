@@ -16,28 +16,6 @@ class Help(models.Model):
 	def __unicode__(self):
 		return self.title
 
-class Sort(models.Model):
-	name = models.CharField(max_length=100)
-	def __unicode__(self):
-		return self.name
-
-class Merchant(models.Model):
-	sort = models.ForeignKey(Sort) 
-	name = models.CharField(max_length=255)
-	introduction = models.CharField(max_length=255)
-	password = models.CharField(max_length=100)
-	address = models.CharField(max_length=255)
-	contact = models.CharField(max_length=255)
-	create_time = models.DateTimeField(auto_now_add=True)
-	
-
-class MerchantWIFI(models.Model):
-	mid = models.ForeignKey(Merchant)
-	mac = models.CharField(max_length=100)
-	key = models.CharField(max_length=255)
-
-	def __unicode__(self):
-		return self.wid
 
 class Article(models.Model):
 	title = models.CharField(max_length = 100)

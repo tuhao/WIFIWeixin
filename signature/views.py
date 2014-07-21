@@ -24,7 +24,7 @@ CONTENT_SWITCH = {
 EVENT_SWITCH = {
 	'subscribe':lambda req,param:reply_welcome(req,param),
 	'click':lambda req,param:reply_click(req,param),
-	'view':lambda req,param:redirect(req,param),
+	'view':lambda req,param:record_redirect(req,param),
 }
 
 MSG_TYPE_SWITCH = {
@@ -108,7 +108,7 @@ def parse_xml(request):
 def reply_click(request,param):
 	pass
 
-def redirect(request,param):
+def record_redirect(request,param):
 	pass
 
 IMAGEURL = re.compile(r'h(?!.*http://).*\.jpg$')
@@ -125,22 +125,12 @@ def reply_gen_news(request,param,merchants):
 		show = merchant.introduction[:25].encode('utf-8')
 		title = show
 		description = show
-		url = "http://" + request.META.get('HTTP_HOST') + reverse('signature.views.merchant_detail',args=(msg.id,))
+		url = "http://" + request.META.get('HTTP_HOST') + reverse('merchant.views.merchant_detail',args=(msg.id,))
 		article = Article(title=title,description=description,pic=pic,url=url)
 		articles.append(article)
 	from_user_name,to_user_name = param['to_user_name'],param['from_user_name']
 	create_timestamp = int(time.time())
 	return render_to_response('reply_news.xml',locals(),content_type='application/xml')
-
-def merchant_detail(request,msg_id):
-	try:
-		merchant = Message.objects.get(id=msg_id)
-	except Exception, e:
-		return HttpResponse(e)
-	else:
-		
-		return render_to_response('merchant_detail.html',locals())
-
 
 #def reply_search(request,param,query):
 #	if query is not None:

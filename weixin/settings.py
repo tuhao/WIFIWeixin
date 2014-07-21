@@ -24,6 +24,9 @@ DATABASES = {
         'PASSWORD': 'arch',
         'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
+        'OPTIONS': {  
+                    'init_command': 'SET storage_engine=MYISAM',  
+        },  
     }
 }
 
@@ -76,8 +79,8 @@ STATIC_URL = '/static/'
 # Additional locations of static files
 if DEBUG:
     STATICFILES_DIRS = (
-        #'d:/MPWeixin/weixin/static',
-        '/home/yasir/Django/WIFIWeixin/weixin/static',
+        'd:/WIFIWeixin/weixin/static',
+        #'/home/yasir/Django/WIFIWeixin/weixin/static',
     )
 else:
     STATICFILES_DIRS = (
@@ -136,6 +139,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'signature',
     'menu',
+    'merchant',
     'pagination',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',

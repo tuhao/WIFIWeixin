@@ -3,6 +3,7 @@ from signature.views import *
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 import menu.urls
+import merchant.urls
 import os
 
 admin.autodiscover()
@@ -24,7 +25,9 @@ urlpatterns = patterns('',
 
     # Signature
     url(r'^$',check_signature),
-    url(r'^detail/(?P<merchant_id>\d+)/$',merchant_detail),
+
+    # Merchant
+    url(r'^merchant/',include(merchant.urls)),
     
     # Static files
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.dirname(globals()["__file__"])+'/static'}),

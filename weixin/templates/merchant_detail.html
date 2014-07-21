@@ -1,8 +1,13 @@
 {% extends 'base_index.html' %}
-{% block title%}晒美食{% endblock %}
+{% block title%}商户详情页{% endblock %}
 {%block content %}
-<div class="span4">
-      <p><img src="{{pic}}"></p>
-      <p>{{content}}</p>
+<div class="span3">
+	<div>{{merchant.name}}</div>
+	<div>{{merchant.img}}
+		{{merchant.instruction}}
+	</div>
+	<div>{{merchant.address}}</div>
+    <div>{{merchant.contact}}</div>
+
 </div>
 {% endblock %}
