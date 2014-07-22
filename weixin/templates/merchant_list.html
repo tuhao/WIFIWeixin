@@ -3,7 +3,7 @@
 {%block content%}
 
 {% load pagination_tags %}
-{% autopaginate merchants 2 %}
+{% autopaginate merchants 20 %}
 <script type="text/javascript">
 
 
@@ -18,7 +18,7 @@
 			<td>
 				<div>{{item.name}}</div>
 				<div>&nbsp</div>
-				<div>100m</div>
+				<div>{{item.distance}} m</div>
 			</td>
 		</tr>
 			{% endfor %}

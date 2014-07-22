@@ -6,7 +6,10 @@
 	<div>{{merchant.img}}
 		{{merchant.instruction}}
 	</div>
-	<div>{{merchant.address}}</div>
+	<div>
+		<img src="/static/icon/marker.png"/>
+		<a href="{% url 'merchant.views.merchant_location' merchant.id %}">{{merchant.address}}</a> 
+	</div>
     <div>{{merchant.contact}}</div>
 
 </div>
