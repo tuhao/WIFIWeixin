@@ -15,8 +15,6 @@ def merchant_list(request):
 	merchants = Merchant.objects.order_by('id')
 	return render_to_response('merchant_list.html',locals())
 
-from operator import itemgetter, attrgetter 
-
 def merchant_distance(request):
 	latitude = request.REQUEST.get('latitude',None)
 	longtitude = request.REQUEST.get('longtitude',None)
@@ -29,7 +27,6 @@ def merchant_distance(request):
 		long_start = longtitude - 0.1
 		long_end = longtitude + 0.1
 		locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end)
-		print locations
 		user_location_dms = (deg_to_dms(latitude),deg_to_dms(longtitude))
 		merchants = list()
 		for location in locations:
