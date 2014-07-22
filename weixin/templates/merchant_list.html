@@ -18,7 +18,7 @@
 			<td>
 				<div>{{item.name}}</div>
 				<div>&nbsp</div>
-				<div>{{item.distance}} m</div>
+				<div>{% if item.distance %}{{item.distance}}m {% else %} 0m {% endif %} </div>
 			</td>
 		</tr>
 			{% endfor %}
