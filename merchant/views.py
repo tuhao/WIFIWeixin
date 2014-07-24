@@ -18,7 +18,6 @@ def merchant_list(request):
 def merchant_distance(request):
 	latitude = request.REQUEST.get('latitude',None)
 	longtitude = request.REQUEST.get('longtitude',None)
-	print latitude,longtitude
 	if latitude and longtitude:
 		latitude = float(latitude)
 		longtitude = float(longtitude)
@@ -36,7 +35,7 @@ def merchant_distance(request):
 			merchants.append(merchant)
 		merchants.sort(cmp=lambda x,y:cmp(x.distance,y.distance), reverse=False)
 	else:
-		locations = Location.objects.order_by('id')
+		merchants = Merchant.objects.order_by('id')
 	return render_to_response('merchant_list.html',locals())
 
 def merchant_location(request,merchant_id):

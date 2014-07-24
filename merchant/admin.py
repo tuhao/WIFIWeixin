@@ -9,3 +9,7 @@ admin.site.register(Device)
 admin.site.register(Sort)
 
 admin.site.register(Location)
+
+admin.site.register(AppUser)
+admin.site.register(WifiUser)
+admin.site.register(Fans)

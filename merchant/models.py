@@ -34,3 +34,33 @@ class Location(models.Model):
 
 	def __unicode__(self):
 		return self.merchant.name
+
+class AppUser(models.Model):
+	username = models.CharField(max_length=20)
+	password = models.CharField(max_length=30)
+	description = models.CharField(max_length=200,null=True)
+	createtime = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __unicode__(self):
+		return self.username
+
+class WifiUser(models.Model):
+	phonemac = models.CharField(max_length=50)
+	online_time = models.IntegerField(default=0)
+	appuser = models.ForeignKey(AppUser)
+	status = models.IntegerField(default=0)
+	isonline = models.IntegerField(default=0)
+	broadbandlimit = models.IntegerField(default=0)
+	ip = models.CharField(max_length=32)
+	device = models.ForeignKey(Device) 
+
+	def __unicode__(self):
+		return self.appuser.username
+
+class Fans(models.Model):
+	appuser = models.ForeignKey(AppUser)
+	merchant = models.ForeignKey(Merchant)
+	createtime = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __unicode__(self):
+		return self.appuser.username
