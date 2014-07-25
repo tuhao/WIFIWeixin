@@ -38,13 +38,21 @@ def merchant_distance(request):
 		merchants = Merchant.objects.order_by('id')
 	return render_to_response('merchant_list.html',locals())
 
-def merchant_location(request,merchant_id):
+def merchant_amap_location(request,merchant_id):
 	try:
 		location = Location.objects.get(id=merchant_id)
 	except Exception, e:
 		return HttpResponse(e)
 	else:
-		return render_to_response('merchant_location.html',locals())
+		return render_to_response('merchant_amap_location.html',locals())
+
+def merchant_baidu_location(request,merchant_id):
+	try:
+		location = Location.objects.get(id=merchant_id)
+	except Exception, e:
+		return HttpResponse(e)
+	else:
+		return render_to_response('merchant_baidu_location.html',locals())
 
 
 
