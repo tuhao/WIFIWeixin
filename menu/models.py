@@ -21,4 +21,3 @@ class View(models.Model):
 	url = models.CharField(max_length=255)
 	default_type = models.CharField(max_length=10,default='view')
 	button_id = models.ForeignKey(Button)
-

@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^location/amap/(?P<merchant_id>\d+)$',merchant_amap_location),
     url(r'^location/baidu/(?P<merchant_id>\d+)$',merchant_baidu_location),
     url(r'^distance/$',merchant_distance),
+    url(r'^nearest/(?P<scale>\d+)/$',merchant_nearest),
     )

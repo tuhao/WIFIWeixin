@@ -24,7 +24,7 @@ $(document).ready(function(){
 
 var marker = new AMap.Marker({ //自定义构造AMap.Marker对象                 
   map:mapObj,                 
-  position: new AMap.LngLat(121.534461,31.214699),     //经纬度            
+  position: new AMap.LngLat({{location.longtitude}},{{location.latitude}}),     //经纬度            
   offset: new AMap.Pixel(-10,-34),                 
   icon: "/static/icon/marker.png"                 
 }); 

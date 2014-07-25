@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 class Sort(models.Model):
 	name = models.CharField(max_length=100)
@@ -16,6 +17,16 @@ class Merchant(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+
+class MerchantEncoder(json.JSONEncoder):  
+    def default(self, obj):  
+        if isinstance(obj, Merchant):  
+        	result = dict()
+        	result.update(id=obj.id,sort_id=obj.sort.id,name=obj.name,address=obj.address)
+        	result.update(introduction=obj.introduction,contact=obj.contact)
+        	return result
+        return json.JSONEncoder.default(self, obj)  
 	
 
 class Device(models.Model):
