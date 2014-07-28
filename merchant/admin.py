@@ -11,5 +11,5 @@ admin.site.register(Sort)
 admin.site.register(Location)
 
 admin.site.register(AppUser)
-admin.site.register(WifiUser)
+admin.site.register(WifiUserLog)
 admin.site.register(Fans)

@@ -39,11 +39,36 @@ def merchant_distance(request):
 		merchants = Merchant.objects.order_by('id')
 	return render_to_response('merchant_list.html',locals())
 
-def merchant_nearest(request,scale):
+class MerchantLocation(Merchant):
+
+	latitude = 0
+	longtitude = 0
+
+	def __init__(self,merchant,latitude,longtitude):
+		self.__dict__ = merchant.__dict__.copy()
+		self.longtitude = longtitude
+		self.latitude = latitude
+
+
+class MerchantLocationEncoder(json.JSONEncoder):  
+    def default(self, obj):  
+    	result = dict()
+    	result.update(id=obj.id,sort_id=obj.sort.id,name=obj.name,address=obj.address)
+        result.update(introduction=obj.introduction,contact=obj.contact)
+        if isinstance(obj, MerchantLocation):  
+        	result.update(latitude=obj.latitude,longtitude=obj.longtitude)
+        	return result
+        if isinstance(obj, Merchant):
+        	result.update(latitude=-1,longtitude=-1)
+       		return result
+        return json.JSONEncoder.default(self, obj)
+
+def merchant_nearest(request):
+	scale = request.REQUEST.get('scale',None)
 	latitude = request.REQUEST.get('latitude',None)
 	longtitude = request.REQUEST.get('longtitude',None)
-	scale = float(scale)
-	if latitude and longtitude:
+	if scale and latitude and longtitude:
+		scale = float(scale)
 		latitude = float(latitude)
 		longtitude = float(longtitude)
 		latt_start = latitude - scale
@@ -51,13 +76,14 @@ def merchant_nearest(request,scale):
 		long_start = longtitude - scale
 		long_end = longtitude + scale
 		locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end)
-		merchants = list()
+		merchant_locations = list()
 		for location in locations:
 			merchant = Merchant.objects.get(id=location.merchant.id)
-			merchants.append(merchant)
+			merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
+			merchant_locations.append(merchant_location)
 	else:
-		merchants = Merchant.objects.order_by('id')
-	return HttpResponse(json.dumps(merchants,cls=MerchantEncoder), content_type="application/json")
+		merchant_locations = list(Merchant.objects.order_by('id'))
+	return HttpResponse(json.dumps(merchant_locations,cls=MerchantLocationEncoder), content_type="application/json")
 
 
 def merchant_amap_location(request,merchant_id):

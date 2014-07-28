@@ -1,5 +1,4 @@
 from django.db import models
-import json
 
 class Sort(models.Model):
 	name = models.CharField(max_length=100)
@@ -17,16 +16,6 @@ class Merchant(models.Model):
 
 	def __unicode__(self):
 		return self.name
-
-
-class MerchantEncoder(json.JSONEncoder):  
-    def default(self, obj):  
-        if isinstance(obj, Merchant):  
-        	result = dict()
-        	result.update(id=obj.id,sort_id=obj.sort.id,name=obj.name,address=obj.address)
-        	result.update(introduction=obj.introduction,contact=obj.contact)
-        	return result
-        return json.JSONEncoder.default(self, obj)  
 	
 
 class Device(models.Model):
@@ -55,15 +44,16 @@ class AppUser(models.Model):
 	def __unicode__(self):
 		return self.username
 
-class WifiUser(models.Model):
-	phonemac = models.CharField(max_length=50)
-	online_time = models.IntegerField(default=0)
-	appuser = models.ForeignKey(AppUser)
-	status = models.IntegerField(default=0)
-	isonline = models.IntegerField(default=0)
-	broadbandlimit = models.IntegerField(default=0)
-	ip = models.CharField(max_length=32)
-	device = models.ForeignKey(Device) 
+class WifiUserLog(models.Model):
+	phonemac = models.CharField(max_length=50,null=True)
+	appuser = models.CharField(max_length=10,null=True)
+	device = models.CharField(max_length=10,null=True) 
+	ip = models.CharField(max_length=64,null=True)
+	incoming = models.IntegerField(default=0,null=True)
+	outgoing = models.IntegerField(default=0,null=True)
+	login_time = models.DateTimeField(null=True)
+	online_time = models.IntegerField(default=0,null=True)
+	isonline = models.IntegerField(default=0,null=True)
 
 	def __unicode__(self):
 		return self.appuser.username
@@ -75,3 +65,4 @@ class Fans(models.Model):
 
 	def __unicode__(self):
 		return self.appuser.username
+
