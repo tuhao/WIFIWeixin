@@ -7,7 +7,8 @@ class Sort(models.Model):
 
 class Merchant(models.Model):
 	sort = models.ForeignKey(Sort) 
-	name = models.CharField(max_length=255)
+	email = models.CharField(max_length=50)
+	name = models.CharField(max_length=50)
 	introduction = models.CharField(max_length=255)
 	password = models.CharField(max_length=100)
 	address = models.CharField(max_length=255)
@@ -19,25 +20,22 @@ class Merchant(models.Model):
 	
 
 class Device(models.Model):
-	merchant = models.ForeignKey(Merchant)
-	mac = models.CharField(max_length=100)
-	key = models.CharField(max_length=255)
-
-	def __unicode__(self):
-		return self.merchant.name
+	merchant_id = models.IntegerField(default=0)
+	mac = models.CharField(max_length=50)
+	status = models.IntegerField(default=0)
 
 class Location(models.Model):
 	merchant = models.ForeignKey(Merchant)
 	latitude = models.CharField(max_length=20)
 	longtitude = models.CharField(max_length=20)
-	precision = models.CharField(max_length=20)
+	precision = models.CharField(max_length=20,null=True)
 
 	def __unicode__(self):
 		return self.merchant.name
 
 class AppUser(models.Model):
-	username = models.CharField(max_length=20)
-	password = models.CharField(max_length=30)
+	username = models.CharField(max_length=50)
+	password = models.CharField(max_length=64)
 	description = models.CharField(max_length=200,null=True)
 	createtime = models.DateTimeField(auto_now_add=True,null=True)
 
@@ -46,8 +44,8 @@ class AppUser(models.Model):
 
 class WifiUserLog(models.Model):
 	phonemac = models.CharField(max_length=50,null=True)
-	appuser = models.CharField(max_length=10,null=True)
-	device = models.CharField(max_length=10,null=True) 
+	appuser = models.CharField(max_length=50,null=True)
+	device = models.CharField(max_length=64,null=True) 
 	ip = models.CharField(max_length=64,null=True)
 	incoming = models.IntegerField(default=0,null=True)
 	outgoing = models.IntegerField(default=0,null=True)
