@@ -13,6 +13,7 @@ class Merchant(models.Model):
 	password = models.CharField(max_length=100)
 	address = models.CharField(max_length=255)
 	contact = models.CharField(max_length=255)
+	image_url = models.CharField(max_length=255,null=True)
 	create_time = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):

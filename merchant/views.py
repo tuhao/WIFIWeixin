@@ -54,12 +54,12 @@ class MerchantLocationEncoder(json.JSONEncoder):
     def default(self, obj):  
     	result = dict()
     	result.update(id=obj.id,sort_id=obj.sort.id,name=obj.name,address=obj.address)
-        result.update(introduction=obj.introduction,contact=obj.contact)
+        result.update(introduction=obj.introduction,contact=obj.contact,image_url=obj.image_url)
         if isinstance(obj, MerchantLocation):  
-        	result.update(latitude=obj.latitude,longtitude=obj.longtitude)
+        	result.update(latitude=float(obj.latitude),longtitude=float(obj.longtitude))
         	return result
         if isinstance(obj, Merchant):
-        	result.update(latitude=-1,longtitude=-1)
+        	result.update(latitude=None,longtitude=None)
        		return result
         return json.JSONEncoder.default(self, obj)
 
@@ -82,7 +82,7 @@ def merchant_nearest(request):
 			merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
 			merchant_locations.append(merchant_location)
 	else:
-		merchant_locations = list(Merchant.objects.order_by('id'))
+		merchant_locations = list(Merchant.objects.order_by('-id')[:20])
 	return HttpResponse(json.dumps(merchant_locations,cls=MerchantLocationEncoder), content_type="application/json")
 
 
