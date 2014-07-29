@@ -2,15 +2,17 @@
 {% block title%}商户详情页{% endblock %}
 {%block content %}
 <div class="row-fluid">
-	<div class="span2"><img src="/static/icon/waiting-small.jpg"/></div>
-	<div class="span10">
-		<div class="span12"><b>{{merchant.name}}</b></div>
-		<div class="span12" onclick=javascript:window.location.href="{% url 'merchant.views.merchant_amap_location' merchant.id %}">
-			<a href="{% url 'merchant.views.merchant_amap_location' merchant.id %}"><img src="/static/icon/marker.png"/>{{merchant.address}}</a> 
-		</div>
-		<div class="span12">{{merchant.contact}}</div>
-		<div class="span12">{{merchant.instruction}}</div>
+	<div class="span12" >
+		<div class="span2"><img src="{{merchant.image_url}}"/></div>
+		<div class="span10">
+			<div class="span12"><b>{{merchant.name}}</b></div>
+			<div class="span12" onclick=javascript:window.location.href="{% url 'merchant.views.merchant_amap_location' merchant.id %}">
+				<a href="{% url 'merchant.views.merchant_amap_location' merchant.id %}"><img src="/static/icon/marker.png"/>{{merchant.address}}</a> 
+			</div>
+			<div class="span12">{{merchant.contact}}</div>
+			<div class="span12">{{merchant.instruction}}</div>
 	</div>	
+	</div>
    
 </div>
 {% endblock %}

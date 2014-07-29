@@ -85,6 +85,21 @@ def merchant_nearest(request):
 		merchant_locations = list(Merchant.objects.order_by('-id')[:20])
 	return HttpResponse(json.dumps(merchant_locations,cls=MerchantLocationEncoder), content_type="application/json")
 
+def merchant_detail_json(request):
+	try:
+		merchant_location = None
+		merchant_id = request.REQUEST.get('id',None)
+		if merchant_id:
+			merchant = Merchant.objects.get(id=int(merchant_id))
+			location = Location.objects.get(merchant=merchant)
+			merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
+		else:
+			return HttpResponse('merchant_id not validate')
+	except Exception, e:
+		return HttpResponse(e)
+	else:
+		return HttpResponse(json.dumps(merchant_location,cls=MerchantLocationEncoder),content_type="application/json")
+
 
 def merchant_amap_location(request,merchant_id):
 	try:

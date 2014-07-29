@@ -55,7 +55,7 @@ class WifiUserLog(models.Model):
 	isonline = models.IntegerField(default=0,null=True)
 
 	def __unicode__(self):
-		return self.appuser.username
+		return self.appuser
 
 class Fans(models.Model):
 	appuser = models.ForeignKey(AppUser)

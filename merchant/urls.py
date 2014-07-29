@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^location/baidu/(?P<merchant_id>\d+)$',merchant_baidu_location),
     url(r'^distance/$',merchant_distance),
     url(r'^nearest/$',merchant_nearest),
+    url(r'^detail/json/$',merchant_detail_json),
     )
