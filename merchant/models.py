@@ -29,7 +29,6 @@ class Location(models.Model):
 	merchant = models.ForeignKey(Merchant)
 	latitude = models.CharField(max_length=20)
 	longtitude = models.CharField(max_length=20)
-	precision = models.CharField(max_length=20,null=True)
 
 	def __unicode__(self):
 		return self.merchant.name
