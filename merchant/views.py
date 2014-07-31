@@ -63,10 +63,11 @@ class MerchantLocationEncoder(json.JSONEncoder):
        		return result
         return json.JSONEncoder.default(self, obj)
 
-def merchant_nearest(request):
+def merchant_nearest_json(request):
 	scale = request.REQUEST.get('scale',None)
 	latitude = request.REQUEST.get('latitude',None)
 	longtitude = request.REQUEST.get('longtitude',None)
+	sort_id = request.REQUEST.get('sort_id',None)
 	if scale and latitude and longtitude:
 		scale = float(scale)
 		latitude = float(latitude)
@@ -75,7 +76,10 @@ def merchant_nearest(request):
 		latt_end = latitude + scale
 		long_start = longtitude - scale
 		long_end = longtitude + scale
-		locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end)
+		if sort_id and int(sort_id) > 0:
+			locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end).filter(merchant__sort=sort_id)
+		else:
+			locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end)
 		merchant_locations = list()
 		for location in locations:
 			merchant = Merchant.objects.get(id=location.merchant.id)
@@ -100,6 +104,18 @@ def merchant_detail_json(request):
 	else:
 		return HttpResponse(json.dumps(merchant_location,cls=MerchantLocationEncoder),content_type="application/json")
 
+class MerchantSortEncoder(json.JSONEncoder):
+	def default(self,obj):
+		result = dict()
+		if isinstance (obj,Sort):
+			result.update(sort_id=obj.id,name=obj.name)
+			return result
+		return json.JSONEncoder.default(self,obj)
+
+def merchant_sort_json(request):
+	sorts = list(Sort.objects.order_by('id'))
+	return HttpResponse(json.dumps(sorts,cls=MerchantSortEncoder),content_type="application/json")
+	
 
 def merchant_amap_location(request,merchant_id):
 	try:
