@@ -108,7 +108,7 @@ class MerchantSortEncoder(json.JSONEncoder):
 	def default(self,obj):
 		result = dict()
 		if isinstance (obj,Sort):
-			result.update(sort_id=obj.id,name=obj.name)
+			result.update(sort_id=obj.id,name=obj.name,icon_url=obj.icon_url)
 			return result
 		return json.JSONEncoder.default(self,obj)
 
