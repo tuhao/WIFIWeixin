@@ -123,7 +123,25 @@ class MerchantSortEncoder(json.JSONEncoder):
 def merchant_sort_json(request):
 	sorts = list(Sort.objects.order_by('id'))
 	return HttpResponse(json.dumps(sorts,cls=MerchantSortEncoder),content_type="application/json")
+
+class CityEncoder(json.JSONEncoder):
+	def default(self,obj):
+		result = dict()
+		if isinstance (obj,City):
+			result.update(city_id=obj.id,city_name=obj.name,city_code=obj.code)
+			return result
+		return json.JSONEncoder.default(self,obj)	
 	
+def merchant_city_json(request):
+	citys = list(City.objects.all())
+	return HttpResponse(json.dumps(citys,cls=CityEncoder),content_type="application/json")
+
+def merchant_city_detail_json(request):
+	city_code = request.REQUEST.get('city_code',None)
+	city = None
+	if city_code:
+		city = City.objects.get(code = city_code)
+	return HttpResponse(json.dumps(city,cls=CityEncoder),content_type="application/json")
 
 def merchant_amap_location(request,merchant_id):
 	try:

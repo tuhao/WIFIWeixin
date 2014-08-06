@@ -11,4 +11,7 @@ urlpatterns = patterns('',
     url(r'^nearest/json/$',merchant_nearest_json),
     url(r'^detail/json/$',merchant_detail_json),
     url(r'^sort/json/$',merchant_sort_json),
+    url(r'^city/json/$',merchant_city_json),
+    url(r'^city/detail/json/$',merchant_city_detail_json),
+
     )
