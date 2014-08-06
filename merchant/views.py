@@ -63,26 +63,34 @@ class MerchantLocationEncoder(json.JSONEncoder):
        		return result
         return json.JSONEncoder.default(self, obj)
 
+EARTH_RADIUS = 6371.0 #
+
 def merchant_nearest_json(request):
-	scale = request.REQUEST.get('scale',None)
+	distance = request.REQUEST.get('distance',None)
 	latitude = request.REQUEST.get('latitude',None)
 	longtitude = request.REQUEST.get('longtitude',None)
 	sort_id = request.REQUEST.get('sort_id',None)
-	if scale and latitude and longtitude:
-		scale = float(scale)
+	city_id = request.REQUEST.get('city_id',None)
+	if distance and latitude and longtitude:
 		latitude = float(latitude)
 		longtitude = float(longtitude)
-		latt_start = latitude - scale
-		latt_end = latitude + scale
-		long_start = longtitude - scale
-		long_end = longtitude + scale
-		if sort_id and int(sort_id) > 0:
-			locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end).filter(merchant__sort=sort_id)
-		else:
-			locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end)
+		distance = float(distance)
+		dlng = 2 * math.asin(math.sin(distance / (2 * EARTH_RADIUS)) / math.cos(latitude))
+		dlng = math.degrees(dlng)
+		dlat = distance / EARTH_RADIUS
+		dlat = math.degrees(dlat)
+		latt_start = latitude - dlat
+		latt_end = latitude + dlat
+		long_start = longtitude - dlng
+		long_end = longtitude + dlng
+		locations = Location.objects.filter(latitude__gte=latt_start).filter(latitude__lte=latt_end).filter(longtitude__gte=long_start).filter(longtitude__lte=long_end)
 		merchant_locations = list()
 		for location in locations:
+			if sort_id and int(sort_id) > 0 and location.merchant.sort_id != int(sort_id):
+				continue
 			merchant = Merchant.objects.get(id=location.merchant.id)
+			if city_id and int(city_id) > 0 and  merchant.city_id != int(city_id):
+				continue
 			merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
 			merchant_locations.append(merchant_location)
 	else:

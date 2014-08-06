@@ -2,7 +2,7 @@ from django.contrib import admin
 from merchant.models import *
 
 class MerchantAdmin(admin.ModelAdmin):
-	list_display = ('id','name','address','create_time')
+	list_display = ('id','name','city','address','create_time')
 
 admin.site.register(City)
 admin.site.register(Merchant,MerchantAdmin)

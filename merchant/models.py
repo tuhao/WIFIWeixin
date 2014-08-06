@@ -2,8 +2,11 @@ from django.db import models
 
 class City(models.Model):
 	id = models.IntegerField(primary_key=True)
+	code = models.CharField(max_length=10)
 	name = models.CharField(max_length=100)
-	parent = models.IntegerField(null=True)
+	
+	def __unicode__(self):
+		return self.name
 
 
 class Sort(models.Model):
@@ -14,6 +17,7 @@ class Sort(models.Model):
 
 class Merchant(models.Model):
 	sort = models.ForeignKey(Sort) 
+	city = models.ForeignKey(City)
 	email = models.CharField(max_length=50)
 	name = models.CharField(max_length=50)
 	introduction = models.CharField(max_length=255)
