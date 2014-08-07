@@ -95,12 +95,11 @@ def merchant_nearest_json(request):
 			else:
 				merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
 			merchant_locations.append(merchant_location)
-	else if city_id:
-		merchants = Merchant.objects.filter(city_id=city_id)[:50]
-		for merchant in merchants:
-			if sort_id and int(sort_id) > 0 and merchant.sort_id != int(sort_id):
-				continue
-			merchant_locations.append(merchant)
+	elif city_id:
+		if sort_id and int(sort_id) > 0:
+			merchant_locations = list(Merchant.objects.filter(city_id=city_id).filter(sort_id=int(sort_id))[:50])
+		else:
+			merchant_locations = list(Merchant.objects.filter(city_id=city_id)[:50])
 	return HttpResponse(json.dumps(merchant_locations,cls=MerchantLocationEncoder), content_type="application/json")
 
 def merchant_detail_json(request):
