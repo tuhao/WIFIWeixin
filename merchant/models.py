@@ -36,6 +36,9 @@ class Device(models.Model):
 	mac = models.CharField(max_length=50)
 	status = models.IntegerField(default=0)
 
+	def __unicode__(self):
+		return self.mac
+
 class Location(models.Model):
 	merchant = models.ForeignKey(Merchant)
 	latitude = models.CharField(max_length=20)
