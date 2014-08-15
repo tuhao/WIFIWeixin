@@ -4,6 +4,7 @@ from signature.views import *
 from django.contrib import admin
 import menu.urls
 import merchant.urls
+import upgrade.urls
 import os
 
 admin.autodiscover()
@@ -29,6 +30,9 @@ urlpatterns = patterns('',
     # Merchant
     url(r'^merchant/',include(merchant.urls)),
     
+    # Upgrade
+    url(r'^upgrade/',include(upgrade.urls)),
+
     # Static files
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.dirname(globals()["__file__"])+'/static'}),
     url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.dirname(globals()["__file__"])+ '/media'}),

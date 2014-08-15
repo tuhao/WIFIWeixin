@@ -1,7 +1,7 @@
 # Django settings for weixin project.
 import os.path
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = None
 
 ACCESS_TOKEN = ''
@@ -22,7 +22,7 @@ DATABASES = {
         # The following settings are not used with sqlite3:
         'USER': 'ewifi',
         'PASSWORD': 'ewifi',
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'HOST': '192.168.1.102',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     'OPTIONS': {
                     'init_command': 'SET storage_engine=MYISAM',  
@@ -59,7 +59,10 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/data2/ewifi/WIFIWeixin/weixin/media/'
+if DEBUG:
+    MEDIA_ROOT = 'd:/WIFIWeixin/weixin/media/'
+else:
+    MEDIA_ROOT = '/data2/ewifi/WIFIWeixin/weixin/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -142,6 +145,7 @@ INSTALLED_APPS = (
     'menu',
     'merchant',
     'pagination',
+    'upgrade',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
