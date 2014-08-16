@@ -18,7 +18,7 @@ class ApkEncoder(json.JSONEncoder):
 	def default(self,obj):
 		result = dict()
 		if isinstance(obj,Apk):
-			result.update(name=obj.name,version_code=obj.version_code)
+			result.update(name=obj.name,version_code=obj.version_code,detail=obj.detail)
 			result.update(version_name=obj.version_name,create_time=str(obj.create_time))
 			result.update(url=obj.apk.url)
 			return result

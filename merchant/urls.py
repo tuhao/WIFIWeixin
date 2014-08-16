@@ -13,5 +13,7 @@ urlpatterns = patterns('',
     url(r'^sort/json/$',merchant_sort_json),
     url(r'^city/json/$',merchant_city_json),
     url(r'^city/detail/json/$',merchant_city_detail_json),
-
+    url(r'^fans/add/$',merchant_fans_add),
+    url(r'^fans/cancel/$',merchant_fans_cancel),
+    url(r'^fans/json/$',merchant_fans_json),
     )
