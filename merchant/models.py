@@ -47,9 +47,19 @@ class Location(models.Model):
 	def __unicode__(self):
 		return self.merchant.name
 
+class AuthType(models.Model):
+	name = models.CharField(max_length=50)
+	auth_value = models.IntegerField()
+
+	def __unicode__(self):
+		return self.name
+
 class AppUser(models.Model):
-	username = models.CharField(max_length=50)
-	password = models.CharField(max_length=64)
+	auth_value = models.IntegerField()
+	username = models.CharField(max_length=200)
+	email = models.CharField(max_length=100,null=True)
+	password = models.CharField(max_length=64,null=True)
+	gender = models.CharField(max_length=10,null=True)
 	description = models.CharField(max_length=200,null=True)
 	createtime = models.DateTimeField(auto_now_add=True,null=True)
 
