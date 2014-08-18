@@ -1,6 +1,8 @@
 from merchant.models import *
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
+from django.forms import ModelForm
+from datetime import date
 import math
 import json
 
@@ -164,7 +166,56 @@ def merchant_baidu_location(request,merchant_id):
 	else:
 		return render_to_response('merchant_baidu_location.html',locals())
 
+class FansEncoder(json.JSONEncoder):
+	def default(self,obj):
+		result = dict()
+		if isinstance(obj,Fans):
+			result.update(user_id=obj.appuser.id,merchant_id=obj.merchant.id)
+			return result
+		return json.JSONEncoder.default(self,obj)
 
+def merchant_fans_add(request):
+	user_id = request.REQUEST.get('user_id',None)
+	merchant_id = request.REQUEST.get('merchant_id',None)
+	if user_id and merchant_id:
+		try:
+			fans = Fans.objects.filter(appuser__id=user_id,merchant__id=merchant_id)
+			if len(fans) > 0:
+				pass
+			else:
+				user = AppUser.objects.get(id=user_id)
+				merchant = Merchant.objects.get(id=merchant_id)
+				fans = Fans(appuser=user,merchant=merchant,createtime=None)
+				fans.save()
+			return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
+		except Exception, e:
+			return HttpResponse(e)
+	return HttpResponse('invalidate args')
+
+def merchant_fans_cancel(request):
+	user_id = request.REQUEST.get('user_id',None)
+	merchant_id = request.REQUEST.get('merchant_id',None)
+	if user_id and merchant_id:
+		try:
+			fans = Fans.objects.filter(appuser__id=user_id,merchant__id=merchant_id)
+			if fans and len(fans) > 0:
+				fans[0].delete()
+				return HttpResponse(json.dumps(fans[0],cls=FansEncoder),content_type="application/json")
+			else:
+				return HttpResponse('not found')
+		except Exception, e:
+			return HttpResponse(e)
+	return HttpResponse('invalidate args')
+
+def merchant_fans_json(request):
+	user_id = request.REQUEST.get('user_id',None)
+	merchant_id = request.REQUEST.get('merchant_id',None)
+	fans = list()
+	if merchant_id:
+		fans = Fans.objects.filter(merchant__id=merchant_id)
+	elif user_id:
+		fans = Fans.objects.filter(appuser__id=user_id)
+	return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
 
 def recalculate_coordinate(val,  _as=None):
   deg,  min,  sec = val
