@@ -66,6 +66,7 @@ class MerchantLocationEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 EARTH_RADIUS = 6371.0 #
+IMAGE_PATH = 'http://61.191.55.81:8080/merchant/Public/'
 
 def merchant_nearest_json(request):
 	distance = request.REQUEST.get('distance',None)
@@ -97,11 +98,19 @@ def merchant_nearest_json(request):
 			else:
 				merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
 			merchant_locations.append(merchant_location)
+			for item in merchant_locations:
+				image_url = str(item.__dict__.get('image_url'))
+				if not image_url.startswith('http://'):
+					item.__dict__.update(image_url = IMAGE_PATH + image_url)
 	elif city_id:
 		if sort_id and int(sort_id) > 0:
 			merchant_locations = list(Merchant.objects.filter(city_id=city_id).filter(sort_id=int(sort_id))[:50])
 		else:
 			merchant_locations = list(Merchant.objects.filter(city_id=city_id)[:50])
+		for item in merchant_locations:
+			image_url = str(item.image_url)
+			if not image_url.startswith('http://'):
+				item.image_url = IMAGE_PATH + image_url
 	return HttpResponse(json.dumps(merchant_locations,cls=MerchantLocationEncoder), content_type="application/json")
 
 def merchant_detail_json(request):

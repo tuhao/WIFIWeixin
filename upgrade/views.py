@@ -1,5 +1,5 @@
 from upgrade.models import *
-from django.shortcuts import render_to_response
+from django.shortcuts import HttpResponseRedirect
 from django.http import HttpResponse
 import json
 
@@ -24,3 +24,5 @@ class ApkEncoder(json.JSONEncoder):
 			return result
 		return json.JSONEncoder.default(self,obj)
 
+def redirect_test(request):
+	return HttpResponseRedirect("http://61.132.220.34:8090/admin?gw_address=192.168.1.1&name=ewifi&gw_id=xxxx")

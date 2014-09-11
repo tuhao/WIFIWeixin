@@ -15,6 +15,7 @@ sys.setdefaultencode='utf-8'
 #		count = count + 1
 
 EARTH_RADIUS=6371.0
+
 distance = 100
 lat = 31.0
 dlng = 2 * asin(sin(distance / (2 * EARTH_RADIUS)) / cos(lat))
