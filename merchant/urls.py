@@ -16,4 +16,5 @@ urlpatterns = patterns('',
     url(r'^fans/add/$',merchant_fans_add),
     url(r'^fans/cancel/$',merchant_fans_cancel),
     url(r'^fans/json/$',merchant_fans_json),
+    url(r'^mac/$',merchant_mac),
     )

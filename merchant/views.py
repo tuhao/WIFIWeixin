@@ -1,8 +1,6 @@
 from merchant.models import *
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from django.forms import ModelForm
-from datetime import date
 import math
 import json
 
@@ -228,6 +226,17 @@ def merchant_fans_json(request):
 	elif user_id:
 		fans = Fans.objects.filter(appuser__id=user_id)
 	return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
+
+def merchant_mac(request):
+	mac = request.REQUEST.get('mac',None)
+	try:
+		devices = Device.objects.filter(mac=mac)
+		for device in devices:
+			return HttpResponse(device.merchant_id,content_type="application/json")
+	except Exception, e:
+		print e
+	return HttpResponse('-1')
+	
 
 def recalculate_coordinate(val,  _as=None):
   deg,  min,  sec = val
