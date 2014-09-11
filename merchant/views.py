@@ -239,8 +239,10 @@ def merchant_mac(request):
 	mac = request.REQUEST.get('mac',None)
 	try:
 		devices = Device.objects.filter(mac=mac)
-		for device in devices:
-			return HttpResponse(device.merchant_id,content_type="application/json")
+		if len(devices) > 0:
+			return HttpResponse(device[0].merchant_id,content_type="application/json")
+		else:
+			return HttpResponse("-1")
 	except Exception, e:
 		print e
 	return HttpResponse('-1')
