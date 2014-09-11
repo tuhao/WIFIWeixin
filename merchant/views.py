@@ -238,13 +238,10 @@ def merchant_fans_json(request):
 def merchant_mac(request):
 	mac = request.REQUEST.get('mac',None)
 	try:
-		print 'merchant_mac:' + mac
 		devices = Device.objects.filter(mac=mac)
 		if len(devices) > 0:
-			print 'device:' + devices[0].merchant_id
 			return HttpResponse(devices[0].merchant_id,content_type="application/json")
 		else:
-			print 'None -1'
 			return HttpResponse("-1")
 	except Exception, e:
 		print e
