@@ -189,16 +189,18 @@ def merchant_fans_add(request):
 	merchant_id = request.REQUEST.get('merchant_id',None)
 	if username and merchant_id:
 		try:
+			fans = list()
 			user = AppUser.objects.get(username=username)
 			merchant = Merchant.objects.get(id=merchant_id)
 			if user and merchant:
-				fans = Fans.objects.filter(appuser__id=user.id,merchant__id=merchant_id)
+				fans = list(Fans.objects.filter(appuser__id=user.id,merchant__id=merchant_id))
 			if len(fans) > 0:
 				pass
 			else:
-				fans = Fans(appuser=user,merchant=merchant,createtime=None)
-				fans.save()
-			return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
+				fan = Fans(appuser=user,merchant=merchant,createtime=None)
+				fan.save()
+				fans.append(fan)
+			return HttpResponse(json.dumps(fans,cls=FansEncoder),content_type="application/json")
 		except Exception, e:
 			return HttpResponse(e)
 	return HttpResponse('invalidate args')
