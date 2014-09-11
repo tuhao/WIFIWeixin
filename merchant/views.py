@@ -185,16 +185,17 @@ class FansEncoder(json.JSONEncoder):
 		return json.JSONEncoder.default(self,obj)
 
 def merchant_fans_add(request):
-	user_id = request.REQUEST.get('user_id',None)
+	username = request.REQUEST.get('username',None)
 	merchant_id = request.REQUEST.get('merchant_id',None)
-	if user_id and merchant_id:
+	if username and merchant_id:
 		try:
-			fans = Fans.objects.filter(appuser__id=user_id,merchant__id=merchant_id)
+			user = AppUser.objects.get(username=username)
+			merchant = Merchant.objects.get(id=merchant_id)
+			if user and merchant:
+				fans = Fans.objects.filter(appuser__id=user.id,merchant__id=merchant_id)
 			if len(fans) > 0:
 				pass
 			else:
-				user = AppUser.objects.get(id=user_id)
-				merchant = Merchant.objects.get(id=merchant_id)
 				fans = Fans(appuser=user,merchant=merchant,createtime=None)
 				fans.save()
 			return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
