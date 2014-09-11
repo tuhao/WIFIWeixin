@@ -200,17 +200,18 @@ def merchant_fans_add(request):
 				fan = Fans(appuser=user,merchant=merchant,createtime=None)
 				fan.save()
 				fans.append(fan)
-			return HttpResponse(json.dumps(fans,cls=FansEncoder),content_type="application/json")
+			return HttpResponse(json.dumps(fans[0],cls=FansEncoder),content_type="application/json")
 		except Exception, e:
 			return HttpResponse(e)
 	return HttpResponse('invalidate args')
 
 def merchant_fans_cancel(request):
-	user_id = request.REQUEST.get('user_id',None)
+	username = request.REQUEST.get('username',None)
 	merchant_id = request.REQUEST.get('merchant_id',None)
-	if user_id and merchant_id:
+	if username and merchant_id:
 		try:
-			fans = Fans.objects.filter(appuser__id=user_id,merchant__id=merchant_id)
+			user = AppUser.objects.get(username=username)
+			fans = Fans.objects.filter(appuser__id=user.id,merchant__id=merchant_id)
 			if fans and len(fans) > 0:
 				fans[0].delete()
 				return HttpResponse(json.dumps(fans[0],cls=FansEncoder),content_type="application/json")
@@ -221,13 +222,17 @@ def merchant_fans_cancel(request):
 	return HttpResponse('invalidate args')
 
 def merchant_fans_json(request):
-	user_id = request.REQUEST.get('user_id',None)
+	username = request.REQUEST.get('username',None)
 	merchant_id = request.REQUEST.get('merchant_id',None)
 	fans = list()
-	if merchant_id:
-		fans = Fans.objects.filter(merchant__id=merchant_id)
-	elif user_id:
-		fans = Fans.objects.filter(appuser__id=user_id)
+	try:
+		if merchant_id:
+			fans = Fans.objects.filter(merchant__id=merchant_id)
+		elif username:
+			user = AppUser.objects.get(username=username)
+			fans = Fans.objects.filter(appuser__id=user.id)
+	except Exception, e:
+		print e
 	return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
 
 def merchant_mac(request):
