@@ -121,6 +121,9 @@ def merchant_detail_json(request):
 			merchant = Merchant.objects.get(id=int(merchant_id))
 			location = Location.objects.get(merchant=merchant)
 			merchant_location = MerchantLocation(merchant,location.latitude,location.longtitude)
+			image_url = str(merchant_location.__dict__.get('image_url'))
+			if not image_url.startswith('http://'):
+				merchant_location.__dict__.update(image_url = IMAGE_PATH + image_url)
 		else:
 			return HttpResponse('merchant_id not validate')
 	except Exception, e:
