@@ -88,3 +88,13 @@ class Fans(models.Model):
 	def __unicode__(self):
 		return self.appuser.username
 
+class Send(models.Model):
+	merchant = models.ForeignKey(Merchant)
+	number = models.CharField(max_length=50,null = True)
+	title = models.CharField(max_length=100)
+	content = models.CharField(max_length=1000)
+	tags = models.CharField(max_length=1000,null=True)
+	createtime = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __unicode__(self):
+		return self.title
