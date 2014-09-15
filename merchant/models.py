@@ -80,6 +80,14 @@ class WifiUserLog(models.Model):
 	def __unicode__(self):
 		return self.appuser
 
+class UserClient(models.Model):
+	appuser = models.ForeignKey(AppUser)
+	client_id = models.CharField(max_length=100)
+	createtime = models.DateTimeField(auto_now_add=True,null = True)
+
+	def __unicode__(self):
+		return self.appuser.name.username
+
 class Fans(models.Model):
 	appuser = models.ForeignKey(AppUser)
 	merchant = models.ForeignKey(Merchant)
