@@ -98,10 +98,11 @@ class Fans(models.Model):
 
 class Send(models.Model):
 	merchant = models.ForeignKey(Merchant)
-	number = models.CharField(max_length=50,null = True)
-	title = models.CharField(max_length=100)
-	content = models.CharField(max_length=1000)
+	task_id = models.CharField(max_length=100)
+	title = models.CharField(max_length=40)
+	content = models.CharField(max_length=600)
 	tags = models.CharField(max_length=1000,null=True)
+	payload = models.CharField(max_length=2048,null=True)
 	createtime = models.DateTimeField(auto_now_add=True,null=True)
 
 	def __unicode__(self):
