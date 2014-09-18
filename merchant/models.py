@@ -86,7 +86,7 @@ class UserClient(models.Model):
 	createtime = models.DateTimeField(auto_now_add=True,null = True)
 
 	def __unicode__(self):
-		return self.appuser.name.username
+		return self.appuser.username
 
 class Fans(models.Model):
 	appuser = models.ForeignKey(AppUser)

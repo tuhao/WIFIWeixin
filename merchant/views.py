@@ -184,42 +184,64 @@ class FansEncoder(json.JSONEncoder):
 			return result
 		return json.JSONEncoder.default(self,obj)
 
+class UserClientEncoder(json.JSONEncoder):
+	def default(self,obj):
+		result = dict()
+		if isinstance(obj,UserClient):
+			result.update(user_id=obj.appuser.id,client_id=obj.client_id,create_time=str(obj.createtime))
+			return result
+		return json.JSONEncoder.default(self,obj)
+
+def user_client_add(request):
+	username = request.REQUEST.get('username',None)
+	client_id = request.REQUEST.get('client_id',None)
+	if username and client_id:
+		try:
+			users = AppUser.objects.filter(username=username)
+			if len(users) > 0:
+				user_clients = list(UserClient.objects.filter(appuser__id = users[0].id))
+				if len(user_clients) > 0:
+					user_client = user_clients[0]
+					user_client.client_id = client_id
+				else:
+					user_client = UserClient(appuser=user,client_id= client_id,createtime=None)
+				user_client.save()
+				return HttpResponse(json.dumps(user_client,cls=UserClientEncoder),content_type="application/json")
+		except Exception, e:
+			return HttpResponse(e)
+	return HttpResponse('{}',content_type="application/json")
+
+def user_client_json(request):
+	username = request.REQUEST.get('username',None)
+	try:
+		if username:
+			users = AppUser.objects.filter(username=username)
+			if len(users) > 0:
+				user_client = UserClient.objects.filter(appuser__id = users[0].id)[0]	
+				return HttpResponse(json.dumps(user_client,cls=UserClientEncoder),content_type="application/json")	
+	except Exception, e:
+		return HttpResponse(e)
+	return HttpResponse('{}',content_type="application/json")
+
 def merchant_fans_add(request):
 	username = request.REQUEST.get('username',None)
 	merchant_id = request.REQUEST.get('merchant_id',None)
 	if username and merchant_id:
 		try:
-			fans = list()
-			user = AppUser.objects.get(username=username)
-			merchant = Merchant.objects.get(id=merchant_id)
-			if user and merchant:
-				fans = list(Fans.objects.filter(appuser__id=user.id,merchant__id=merchant_id))
-			if len(fans) > 0:
-				pass
-			else:
-				fan = Fans(appuser=user,merchant=merchant,createtime=None)
-				fan.save()
-				fans.append(fan)
-			return HttpResponse(json.dumps(fans[0],cls=FansEncoder),content_type="application/json")
+			users = AppUser.objects.filter(username=username)
+			merchants = Merchant.objects.filter(id=merchant_id)
+			if len(users) > 0 and len(merchants) > 0:
+				fans = list(Fans.objects.filter(appuser__id=users[0].id,merchant__id=merchant_id))
+				if len(fans) > 0:
+					pass
+				else:
+					fan = Fans(appuser=users[0],merchant=merchants[0],createtime=None)
+					fan.save()
+					return HttpResponse(json.dumps(fan,cls=FansEncoder),content_type="application/json")
 		except Exception, e:
 			return HttpResponse(e)
-	return HttpResponse('invalidate args')
+	return HttpResponse('{}',content_type="application/json")
 
-def merchant_fans_cancel(request):
-	username = request.REQUEST.get('username',None)
-	merchant_id = request.REQUEST.get('merchant_id',None)
-	if username and merchant_id:
-		try:
-			user = AppUser.objects.get(username=username)
-			fans = Fans.objects.filter(appuser__id=user.id,merchant__id=merchant_id)
-			if fans and len(fans) > 0:
-				fans[0].delete()
-				return HttpResponse(json.dumps(fans[0],cls=FansEncoder),content_type="application/json")
-			else:
-				return HttpResponse('not found')
-		except Exception, e:
-			return HttpResponse(e)
-	return HttpResponse('invalidate args')
 
 def merchant_fans_json(request):
 	username = request.REQUEST.get('username',None)
@@ -229,10 +251,11 @@ def merchant_fans_json(request):
 		if merchant_id:
 			fans = Fans.objects.filter(merchant__id=merchant_id)
 		elif username:
-			user = AppUser.objects.get(username=username)
-			fans = Fans.objects.filter(appuser__id=user.id)
+			users = AppUser.objects.filter(username=username)
+			if len(users) > 0:
+				fans = Fans.objects.filter(appuser__id=users[0].id)
 	except Exception, e:
-		print e
+		return HttpResponse(e)
 	return HttpResponse(json.dumps(list(fans),cls=FansEncoder),content_type="application/json")
 
 def merchant_mac(request):

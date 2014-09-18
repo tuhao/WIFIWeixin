@@ -21,3 +21,5 @@ admin.site.register(WifiUserLog,WifiUserLogAdmin)
 admin.site.register(Fans)
 
 admin.site.register(AuthType)
+
+admin.site.register(UserClient)
