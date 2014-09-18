@@ -209,7 +209,7 @@ def user_client_add(request):
 				return HttpResponse(json.dumps(user_client,cls=UserClientEncoder),content_type="application/json")
 		except Exception, e:
 			return HttpResponse(e)
-	return HttpResponse('{}',content_type="application/json")
+	return HttpResponse('-1',content_type="application/json")
 
 def user_client_json(request):
 	username = request.REQUEST.get('username',None)
@@ -222,7 +222,7 @@ def user_client_json(request):
 					return HttpResponse(json.dumps(user_clients[0],cls=UserClientEncoder),content_type="application/json")	
 	except Exception, e:
 		return HttpResponse(e)
-	return HttpResponse('{}',content_type="application/json")
+	return HttpResponse('-1',content_type="application/json")
 
 def merchant_fans_add(request):
 	username = request.REQUEST.get('username',None)
@@ -241,7 +241,7 @@ def merchant_fans_add(request):
 					return HttpResponse(json.dumps(fan,cls=FansEncoder),content_type="application/json")
 		except Exception, e:
 			return HttpResponse(e)
-	return HttpResponse('{}',content_type="application/json")
+	return HttpResponse('-1',content_type="application/json")
 
 
 def merchant_fans_json(request):
