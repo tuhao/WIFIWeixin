@@ -204,7 +204,7 @@ def user_client_add(request):
 					user_client = user_clients[0]
 					user_client.client_id = client_id
 				else:
-					user_client = UserClient(appuser=user,client_id= client_id,createtime=None)
+					user_client = UserClient(appuser=users[0],client_id= client_id,createtime=None)
 				user_client.save()
 				return HttpResponse(json.dumps(user_client,cls=UserClientEncoder),content_type="application/json")
 		except Exception, e:
@@ -217,8 +217,9 @@ def user_client_json(request):
 		if username:
 			users = AppUser.objects.filter(username=username)
 			if len(users) > 0:
-				user_client = UserClient.objects.filter(appuser__id = users[0].id)[0]	
-				return HttpResponse(json.dumps(user_client,cls=UserClientEncoder),content_type="application/json")	
+				user_clients = UserClient.objects.filter(appuser__id = users[0].id)
+				if len(user_clients) > 0:
+					return HttpResponse(json.dumps(user_clients[0],cls=UserClientEncoder),content_type="application/json")	
 	except Exception, e:
 		return HttpResponse(e)
 	return HttpResponse('{}',content_type="application/json")
