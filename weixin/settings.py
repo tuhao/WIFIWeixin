@@ -1,7 +1,7 @@
 # Django settings for weixin project.
 import os.path
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = None
 
 ACCESS_TOKEN = ''
@@ -22,7 +22,7 @@ DATABASES = {
         # The following settings are not used with sqlite3:
         'USER': 'ewifi',
         'PASSWORD': 'ewifi',
-        'HOST': '192.168.2.102',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     'OPTIONS': {
                     'init_command': 'SET storage_engine=MYISAM',  
@@ -32,7 +32,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['61.132.220.34']
+ALLOWED_HOSTS = ['61.191.55.81']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -62,7 +62,7 @@ USE_TZ = True
 if DEBUG:
     MEDIA_ROOT = 'd:/WIFIWeixin/weixin/media/'
 else:
-    MEDIA_ROOT = '/data2/ewifi/WIFIWeixin/weixin/media/'
+    MEDIA_ROOT = '/usr/local/ewifi/WIFIWeixin/weixin/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -83,12 +83,10 @@ STATIC_URL = '/static/'
 if DEBUG:
     STATICFILES_DIRS = (
         'd:/WIFIWeixin/weixin/static',
-        #'/home/yasir/Django/WIFIWeixin/weixin/static',
     )
 else:
     STATICFILES_DIRS = (
-        #'/srv/uwsgi/WIFIWeixin/weixin/static',
-        '/data2/ewifi/WIFIWeixin/weixin/static',
+        '/usr/local/ewifi/WIFIWeixin/weixin/static',
     )
 
 
