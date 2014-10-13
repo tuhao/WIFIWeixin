@@ -62,7 +62,7 @@ USE_TZ = True
 if DEBUG:
     MEDIA_ROOT = 'd:/WIFIWeixin/weixin/media/'
 else:
-    MEDIA_ROOT = '/usr/local/ewifi/WIFIWeixin/weixin/media/'
+    MEDIA_ROOT = '/data2/ewifi/WIFIWeixin/weixin/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -86,7 +86,7 @@ if DEBUG:
     )
 else:
     STATICFILES_DIRS = (
-        '/usr/local/ewifi/WIFIWeixin/weixin/static',
+        '/data2/ewifi/WIFIWeixin/weixin/static',
     )
 
 
