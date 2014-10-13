@@ -10,6 +10,7 @@ class Sort(models.Model):
 class Ads(models.Model):
 	name = models.CharField(max_length=256)
 	url = models.CharField(max_length=500)
+	redirect_url = models.CharField(max_length=500)
 	createtime = models.DateTimeField(auto_now_add=True,null=True)
 	sort = models.ForeignKey(Sort)
 
