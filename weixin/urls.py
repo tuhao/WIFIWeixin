@@ -5,6 +5,7 @@ from django.contrib import admin
 import menu.urls
 import merchant.urls
 import upgrade.urls
+import banner.urls
 import os
 
 admin.autodiscover()
@@ -32,6 +33,9 @@ urlpatterns = patterns('',
     
     # Upgrade
     url(r'^upgrade/',include(upgrade.urls)),
+
+    # Banner
+    url(r'^banner/',include(banner.urls)),
 
     # Static files
     url(r'^static/(?P<path>.*)$','django.views.static.serve',{'document_root':os.path.dirname(globals()["__file__"])+'/static'}),
