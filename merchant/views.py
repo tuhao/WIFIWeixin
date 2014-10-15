@@ -53,7 +53,7 @@ class MerchantLocation(Merchant):
 class MerchantLocationEncoder(json.JSONEncoder):  
     def default(self, obj):  
     	result = dict()
-    	result.update(id=obj.id,sort_id=obj.sort.id,name=obj.name,address=obj.address,inner_sort=obj.inner_sort)
+    	result.update(id=obj.id,sort_id=obj.sort.id,name=obj.name,address=obj.address,inner_sort=obj.inner_sort.id)
         result.update(introduction=obj.introduction,contact=obj.contact,image_url=obj.image_url)
         if isinstance(obj, MerchantLocation):  
         	result.update(latitude=float(obj.latitude),longtitude=float(obj.longtitude))
