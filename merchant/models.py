@@ -8,16 +8,23 @@ class City(models.Model):
 	def __unicode__(self):
 		return self.name
 
-
 class Sort(models.Model):
 	name = models.CharField(max_length=100)
 	icon_url = models.CharField(max_length=255,null=True)
 	def __unicode__(self):
 		return self.name
 
+class InnerSort(models.Model):
+	sort = models.ForeignKey(Sort)
+	name = models.CharField(max_length=100)
+	icon_url = models.CharField(max_length=256,null=True)
+	def __unicode__(self):
+		return self.name
+
 class Merchant(models.Model):
-	sort = models.ForeignKey(Sort) 
+	sort = models.ForeignKey(Sort)
 	city = models.ForeignKey(City)
+	inner_sort = models.ForeignKey(InnerSort)
 	email = models.CharField(max_length=50)
 	name = models.CharField(max_length=50)
 	introduction = models.CharField(max_length=255)

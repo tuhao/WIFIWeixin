@@ -8,6 +8,7 @@ class MerchantAdmin(admin.ModelAdmin):
 admin.site.register(Merchant,MerchantAdmin)
 admin.site.register(Device)
 admin.site.register(Sort)
+admin.site.register(InnerSort)
 
 admin.site.register(Location)
 
