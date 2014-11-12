@@ -114,3 +114,41 @@ class Send(models.Model):
 
 	def __unicode__(self):
 		return self.title
+
+
+class Good(models.Model):
+	merchant = models.ForeignKey(Merchant)
+	image_url = models.CharField(max_length=500,null=True)
+	title = models.CharField(max_length=100)
+	name = models.CharField(max_length=500)
+	description = models.CharField(max_length=2000)
+	origin_price = models.CharField(max_length=10)
+	on_promotion = models.CharField(max_length=10)
+	promotion_price = models.CharField(max_length=10,null=True)
+	promotion_deadline = models.DateTimeField(null=True)
+	createtime = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __unicode__(self):
+		return self.title
+
+class Comment(models.Model):
+	merchant = models.ForeignKey(Merchant)
+	image_url = models.CharField(max_length=500,null=True)
+	appuser = models.ForeignKey(AppUser)
+	content = models.CharField(max_length=500)
+	star = models.CharField(max_length=10)
+	createtime = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __unicode__(self):
+		return self.content
+
+class GoodsComment(models.Model):
+	good = models.ForeignKey(Good)
+	image_url = models.CharField(max_length=500,null=True)
+	appuser = models.ForeignKey(AppUser)
+	content = models.CharField(max_length=500)
+	star = models.CharField(max_length=10)
+	createtime = models.DateTimeField(auto_now_add=True,null=True)
+
+	def __unicode__(self):
+		return self.content
