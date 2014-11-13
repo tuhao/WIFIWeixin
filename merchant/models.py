@@ -115,7 +115,6 @@ class Send(models.Model):
 	def __unicode__(self):
 		return self.title
 
-
 class Good(models.Model):
 	merchant = models.ForeignKey(Merchant)
 	image_url = models.CharField(max_length=500,null=True)
