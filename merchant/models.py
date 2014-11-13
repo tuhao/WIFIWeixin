@@ -152,3 +152,13 @@ class GoodsComment(models.Model):
 
 	def __unicode__(self):
 		return self.content
+
+class Star(models.Model):
+	merchant = models.ForeignKey(Merchant)
+	comment_count = models.IntegerField(default=0)
+	fan_count = models.IntegerField(default=0)
+	star = models.CharField(max_length=10,null=True)
+	wifi = models.CharField(max_length=50,null=True)
+
+	def __unicode__(self):
+		return self.merchant.name
